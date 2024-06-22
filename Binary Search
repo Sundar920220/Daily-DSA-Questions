@@ -1,0 +1,48 @@
+--------------------------------
+  LeetCode 704 - Binary Search
+--------------------------------
+
+Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Example 1:
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+Explanation: 9 exists in nums and its index is 4
+
+Example 2:
+Input: nums = [-1,0,3,5,9,12], target = 2
+Output: -1
+Explanation: 2 does not exist in nums so return -1
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int N = nums.length;  // Get the length of the array
+        int low = 0, high = N - 1;  // Initialize low and high pointers
+        
+        while (low <= high) {  // Binary search loop
+            int mid = (low + high) >> 1;  // Calculate mid index using bitwise shift
+            
+            if (nums[mid] == target) {  // Check if mid element is the target
+                return mid;  // Target found, return index
+            } else if (nums[mid] > target) {  // If mid element is greater than target
+                high = mid - 1;  // Move high pointer to the left
+            } else {  // If mid element is less than target
+                low = mid + 1;  // Move low pointer to the right
+            }
+        }
+        
+        return -1;  // Target not found, return -1
+    }
+}
+
+Time Complexity  : O(log N)
+Space Complexity : O(1)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ 

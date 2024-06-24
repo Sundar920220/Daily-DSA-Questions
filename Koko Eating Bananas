@@ -1,0 +1,69 @@
+---------------------------------------
+  LeetCode 875 - Koko Eating Bananas
+---------------------------------------
+
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.Koko can decide her bananas-per-hour eating speed of k. 
+Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.Return the minimum integer k such that she can eat all the bananas within h hours.
+
+ Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 5
+Output: 30
+Example 3:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        // Initialize minSpeed to 1 because Koko can't eat at a speed less than 1.
+        int minSpeed = 1;
+        
+        // Initialize maxSpeed to the largest value in piles since Koko can eat at most the largest pile in one hour.
+        int maxSpeed = 0;
+        for(int pile : piles) {
+            maxSpeed = Math.max(pile, maxSpeed);
+        }
+        
+        // Use binary search to find the minimum speed.
+        while (minSpeed < maxSpeed) {
+            // Calculate the middle speed between minSpeed and maxSpeed.
+            int mid = (minSpeed + maxSpeed) >> 1;
+            
+            // Check if Koko can eat all bananas at speed 'mid' within 'h' hours.
+            if (check(piles, h, mid)) {
+                // If yes, then try a slower speed by setting maxSpeed to mid.
+                maxSpeed = mid;
+            } else {
+                // If no, then increase the speed by setting minSpeed to mid + 1.
+                minSpeed = mid + 1;
+            }
+        }
+        
+        // Return the minimum speed found.
+        return minSpeed;
+    }
+
+    // Helper method to check if Koko can eat all bananas at a given speed within 'h' hours.
+    public boolean check(int[] piles, int h, int speed) {
+        int hours = 0;
+        for (int pile : piles) {
+            // Calculate the hours needed to eat each pile at the given speed.
+            // Math.ceil((double)pile / speed) is used to round up to the nearest hour.
+            hours += (int)Math.ceil((double)pile / speed);
+        }
+        // Return true if the total hours is less than or equal to 'h', otherwise return false.
+        return hours <= h;
+    }
+}
+
+-------------------------------------------------------
+Time Complexity : O(n log n) || Space Complexity : O(1)
+----------------------------------------------------------
+
